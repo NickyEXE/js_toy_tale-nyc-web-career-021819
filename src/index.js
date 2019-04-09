@@ -26,7 +26,7 @@ addBtn.addEventListener('click', () => {
 })
 
 function clickHandler(e){
-  if (e.target.parentNode && e.target.parentNode.parentNode && e.target.parentNode.parentNode.dataset && e.target.parentNode.parentNode.dataset.id){
+  if(e.target.classList.value ==="like-btn"){
   const id = e.target.parentNode.parentNode.dataset.id
   const newLikes = parseInt(e.target.parentNode.querySelector("p").innerText.split(" ")[0]) + 1
   fetch(`http://localhost:3000/toys/${id}`, {
@@ -35,6 +35,17 @@ function clickHandler(e){
             "Content-Type": "application/json"
         },
         body: JSON.stringify({likes: newLikes}) // body data type must match "Content-Type" header
+    })
+    .then(response => response.json())
+    .then(fetchToys)
+  }
+  if(e.target.classList.value ==="delete-btn"){
+  const id = e.target.parentNode.dataset.id
+  fetch(`http://localhost:3000/toys/${id}`, {
+        method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
     .then(response => response.json())
     .then(fetchToys)
@@ -67,13 +78,14 @@ function renderAllToys(toys){
 
 function renderToy(toy){
   newDiv = document.createElement("div")
-  newDiv.ClassName = "card"
+  newDiv.className = "card"
   newDiv.dataset.id = toy.id
   newDiv.innerHTML =
-      `<center><h2>${toy.name}</h2>
+      `<h2>${toy.name}</h2>
       <img src=${toy.image} class="toy-avatar" />
       <p>${toy.likes} Likes </p>
-      <button class="like-btn">Like <3</button></center>`
+      <button class="like-btn">Like <3</button>
+      <button class="delete-btn">Delete <3<</button>`
   toyCollection.appendChild(newDiv)
 }
 
